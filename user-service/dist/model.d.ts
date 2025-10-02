@@ -1,5 +1,5 @@
 import mongoose, { Document } from "mongoose";
-interface IUser extends Document {
+export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
@@ -11,5 +11,4 @@ export declare const User: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<u
 }> & {
     __v: number;
 }, any>;
-export {};
 //# sourceMappingURL=model.d.ts.map

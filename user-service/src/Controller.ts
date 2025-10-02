@@ -2,6 +2,7 @@ import { User } from "./model.js";
 import TryCatch from "./TryCatch.js";
 import jwt from "jsonwebtoken";
 import bcrypt from  "bcrypt";
+import type { AuthRequest } from "./middleware.js";
 
 
 export const register = TryCatch(async (req, res) => {
@@ -73,6 +74,15 @@ export const login = TryCatch(async (req, res) => {
         .json({
             message: "Login successfully"
         })
+})
+
+
+export const myProfile = TryCatch( async(req: AuthRequest, res) => {
+      const userData = req.user;
+      return res.status(200).json({
+             success : true,
+             userData
+      })  
 })
 
 

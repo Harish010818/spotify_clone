@@ -55,4 +55,11 @@ export const login = TryCatch(async (req, res) => {
         message: "Login successfully"
     });
 });
+export const myProfile = TryCatch(async (req, res) => {
+    const userData = req.user;
+    return res.status(200).json({
+        success: true,
+        userData
+    });
+});
 //# sourceMappingURL=Controller.js.map
