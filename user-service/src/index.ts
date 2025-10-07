@@ -19,5 +19,5 @@ app.use("/api/v1/user", userRoute);
 const PORT = process.env.PORT || 8000;
 
 app.listen(3000, () => {
-    console.log(`User service is running on port 3000`);
+    console.log(`User service is running on port ${PORT}`);
 })
