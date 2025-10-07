@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 import dotenv from 'dotenv';
+import multer from 'multer';
 dotenv.config();
-// Step 2: Middleware
 export const isAuthenticated = async (req, res, next) => {
     try {
         const token = req.cookies?.token;
@@ -23,4 +23,8 @@ export const isAuthenticated = async (req, res, next) => {
         return;
     }
 };
+// Multer setup for file uploads
+const storage = multer.memoryStorage();
+const uploadFile = multer({ storage }).single("file");
+export default uploadFile;
 //# sourceMappingURL=middleware.js.map
