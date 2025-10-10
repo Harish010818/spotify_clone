@@ -62,4 +62,4 @@ export const myProfile = TryCatch(async (req, res) => {
         userData
     });
 });
-//# sourceMappingURL=Controller.js.map
+//# sourceMappingURL=controller.js.map
