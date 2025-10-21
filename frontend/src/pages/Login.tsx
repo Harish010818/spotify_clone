@@ -17,54 +17,69 @@ const Login = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen max-h-screen">
-      <div className="bg-black text-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-3xl font-semibold text-center mb-8">
-          Login To Spotify
-        </h2>
-        <form className="mt-8" onSubmit={submitHandler}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
-              Email or username
-            </label>
-            <input
-              type="email"
-              placeholder="Email or username"
-              className="auth-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+  <div className="flex items-center justify-center h-screen bg-gradient-to-br from-[#121212] via-[#181818] to-[#000000] text-white">
+    <div className="bg-[#181818]/80 backdrop-blur-lg border border-[#282828] p-10 rounded-2xl shadow-2xl w-[90%] max-w-md">
+      <h2 className="text-4xl font-extrabold text-center mb-8 tracking-tight text-[#1DB954]">
+        Login to Spotify
+      </h2>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Password</label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="auth-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button disabled={btnLoading} className="auth-btn">
-            {btnLoading ? "Please Wait..." : "Login"}
-          </button>
-        </form>
-
-        <div className="text-center mt-6">
-          <Link
-            to={"/register"}
-            className="text-sm text-gray-400 hover:text-gray-300"
-          >
-            Don't have an Account?
-          </Link>
+      <form className="space-y-6" onSubmit={submitHandler}>
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-300">
+            Email or Username
+          </label>
+          <input
+            type="email"
+            placeholder="Email or username"
+            className="w-full px-4 py-3 rounded-md bg-[#282828] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1DB954] focus:ring-offset-2 focus:ring-offset-[#121212] transition-all duration-200"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-300">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            className="w-full px-4 py-3 rounded-md bg-[#282828] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1DB954] focus:ring-offset-2 focus:ring-offset-[#121212] transition-all duration-200"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button
+          disabled={btnLoading}
+          className={`w-full py-3 rounded-full font-semibold tracking-wide transition-all duration-300 ${
+            btnLoading
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-[#1DB954] hover:bg-[#1ed760] text-black shadow-lg hover:shadow-[#1db954]/50"
+          }`}
+        >
+          {btnLoading ? "Please Wait..." : "Log In"}
+        </button>
+      </form>
+
+      <div className="text-center mt-8 text-gray-400">
+        Don’t have an account?{" "}
+        <Link
+          to="/register"
+          className="text-[#1DB954] hover:text-[#1ed760] font-semibold"
+        >
+          Register
+        </Link>
+      </div>
+
+      <div className="text-center mt-8">
+        <p className="text-sm text-gray-500">© 2025 Spotify Clone</p>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Login;
