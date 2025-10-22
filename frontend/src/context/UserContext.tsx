@@ -35,7 +35,7 @@ interface UserContextType {
     navigate: (path: string) => void
   ) => Promise<void>;
   addToPlaylist: (id: string) => void;
-  logoutUser: () => Promise<void>;
+  logoutUser: (navigate: (path: string) => void) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -51,33 +51,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [btnLoading, setBtnLoading] = useState(false);
 
   async function registerUser(
-    name: string,
-    email: string,
-    password: string,
-    navigate: (path: string) => void
-  ) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/register`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+  name: string,
+  email: string,
+  password: string,
+  navigate: (path: string) => void
+) {
+  setBtnLoading(true);
+  try {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/register`,
+      { name, email, password },
+      { withCredentials: true } // 👈 important for cookies
+    );
 
-      toast.success(data.message);
-      localStorage.setItem("token", data.token);
-      setUser(data.user);
-      setIsAuth(true);
-      setBtnLoading(false);
-      navigate("/login");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "An error occured");
-      setBtnLoading(false);
-    }
+    toast.success("Account created successfully!");
+    setUser(data.user);
+    setIsAuth(true);
+    setBtnLoading(false);
+    navigate("/");
+  } catch (error: any) {
+    toast.error(error.response?.data?.message || "An error occurred");
+    setBtnLoading(false);
   }
+}
 
   async function loginUser(
     email: string,
@@ -131,7 +127,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  async function logoutUser() {
+  async function logoutUser(navigate: (path: string) => void) {
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/logout`,
@@ -139,10 +135,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           withCredentials: true,
         }
       );
+
+      toast.success(data.message);
       setUser(null);
       setIsAuth(false);
-      toast.success(data.message);
+      navigate("/login");
     } catch (error) {
+      navigate("/login");
       console.log(error);
     }
   }

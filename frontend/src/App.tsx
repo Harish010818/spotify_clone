@@ -10,7 +10,7 @@ import Admin from "./pages/Admin";
 
 function App() {
   const { isAuth, loading } = useUserData();
-
+  console.log(isAuth, loading);
   if (loading) return <Loader />;
 
   const router = createBrowserRouter([
@@ -32,7 +32,7 @@ function App() {
     },
     {
       path: "/register",
-      element: <Register />
+      element: isAuth ? <Home /> : <Register />
     },
     {
       path: "/album/:id",

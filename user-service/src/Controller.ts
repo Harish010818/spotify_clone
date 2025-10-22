@@ -6,7 +6,6 @@ import type { AuthRequest } from "./middleware.js";
 
 
 export const register = TryCatch(async (req, res) => {
-    console.log(req.body);
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({
@@ -32,7 +31,16 @@ export const register = TryCatch(async (req, res) => {
         }
     )
 
-    return res.status(200).json({
+
+    const token = jwt.sign({ userId: userData._id }, process.env.SECRET_KEY as string, { expiresIn: '1d' });
+
+    return res.status(200)
+        .cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000
+        }).json({
         success: true,
         message: "Account created successfully",
         userData

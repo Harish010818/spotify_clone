@@ -6,7 +6,7 @@ const Navbar = () => {
   const { isAuth, logoutUser } = useUserData();
 
   const logoutHandler = () => {
-    logoutUser();
+    logoutUser(navigate);
   };
 
   return (

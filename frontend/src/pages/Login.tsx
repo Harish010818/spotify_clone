@@ -8,6 +8,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  console.log("login page loaded..") 
   const { loginUser, btnLoading } = useUserData();
 
   async function submitHandler(e: any) {
