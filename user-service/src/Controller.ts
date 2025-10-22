@@ -6,9 +6,9 @@ import type { AuthRequest } from "./middleware.js";
 
 
 export const register = TryCatch(async (req, res) => {
-
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    console.log(req.body);
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
         return res.status(400).json({
             message: "All field are required"
         })
@@ -25,7 +25,7 @@ export const register = TryCatch(async (req, res) => {
 
     const userData = await User.create(
         {
-            username,
+            name,
             email,
             password: hashedPassword,
 
@@ -38,9 +38,6 @@ export const register = TryCatch(async (req, res) => {
         userData
     })
 })
-
-
-
 
 export const login = TryCatch(async (req, res) => {
     const { email, password } = req.body;
@@ -76,6 +73,15 @@ export const login = TryCatch(async (req, res) => {
         })
 })
 
+export const logout = TryCatch( async(_: AuthRequest, res) => {
+
+    return res.status(200)
+            .cookie("token", " ", { maxAge: 0})
+            .json({
+                message: "logged out successfully"
+            })
+})
+
 
 export const myProfile = TryCatch( async(req: AuthRequest, res) => {
     const userData = req.user;
@@ -84,7 +90,6 @@ export const myProfile = TryCatch( async(req: AuthRequest, res) => {
              userData
     })  
 })
-
 
 
 export const addToPlaylist = TryCatch(
@@ -122,5 +127,3 @@ export const addToPlaylist = TryCatch(
     });
   }
 );
-
-

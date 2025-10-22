@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { sql } from './config/db.js';
 import adminRoutes from './adminRoute.js';
-// import cors from "cors";
+import cors from "cors";
 // import bodyParser from 'body-parser';
 // import cookieParser from 'cookie-parser';
 dotenv.config();
@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 // app.use(bodyParser.urlencoded({extended : true}));
 // app.use(cookieParser());
-// app.use(cors({origin : process.env.FRONTEND_URL, credentials : true}))
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 const initDB = async () => {
     try {
         await sql ` 
@@ -38,7 +38,7 @@ const initDB = async () => {
     }
 };
 app.use("api/v1/admin", adminRoutes);
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 initDB().then(() => {
     app.listen(PORT, () => {
         console.log(`User service is running on port ${PORT}`);

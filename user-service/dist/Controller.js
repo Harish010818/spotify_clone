@@ -3,8 +3,9 @@ import TryCatch from "./TryCatch.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 export const register = TryCatch(async (req, res) => {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    console.log(req.body);
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
         return res.status(400).json({
             message: "All field are required"
         });
@@ -17,7 +18,7 @@ export const register = TryCatch(async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const userData = await User.create({
-        username,
+        name,
         email,
         password: hashedPassword,
     });
@@ -55,11 +56,42 @@ export const login = TryCatch(async (req, res) => {
         message: "Login successfully"
     });
 });
+export const logout = TryCatch(async (_, res) => {
+    return res.status(200)
+        .cookie("token", " ", { maxAge: 0 })
+        .json({
+        message: "logged out successfully"
+    });
+});
 export const myProfile = TryCatch(async (req, res) => {
     const userData = req.user;
     return res.status(200).json({
         success: true,
         userData
+    });
+});
+export const addToPlaylist = TryCatch(async (req, res) => {
+    const userId = req.user?._id;
+    const user = await User.findById(userId);
+    if (!user) {
+        res.status(404).json({
+            message: "NO user with this id",
+        });
+        return;
+    }
+    if (user?.playlist.includes(req.params.id)) {
+        const index = user.playlist.indexOf(req.params.id);
+        user.playlist.splice(index, 1);
+        await user.save();
+        res.json({
+            message: " Removed from playlist",
+        });
+        return;
+    }
+    user.playlist.push(req.params.id);
+    await user.save();
+    res.json({
+        message: "Added to PlayList",
     });
 });
 //# sourceMappingURL=controller.js.map

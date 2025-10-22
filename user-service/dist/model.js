@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 const userSchema = new Schema({
-    username: {
+    name: {
         type: String,
         required: true
     },
@@ -14,7 +14,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        default: 'user'
+        default: 'admin'
     },
     playlist: [
         {

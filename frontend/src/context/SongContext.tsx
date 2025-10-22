@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 
-const server = "http://localhost:3000";
 
 export interface Song {
   id: string;
@@ -42,6 +41,8 @@ interface SongContextType {
   albumSong: Song[];
   albumData: Album | null;
   fetchAlbumsongs: (id: string) => Promise<void>;
+  fetchSongs: () => Promise<void>;
+  fetchAlbums: () => Promise<void>;
 }
 
 const SongContext = createContext<SongContextType | undefined>(undefined);
@@ -62,8 +63,9 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.get<Song[]>(
-        `${import.meta.env.VITE_API_URL}/api/v1/user/song/all`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/song/all`
       );
+      console.log(data);
       setSongs(data);
       if (data.length > 0) setSelectedSong(data[0].id.toString());
       setIsPlaying(false);
@@ -78,22 +80,22 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.get<Album[]>(
-        `${import.meta.env.VITE_API_URL}/api/v1/user/album/all`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/album/all`
       );
+      console.log(data);
       setAlbums(data);
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
-      
   }, []);
 
   const fetchSingleSong = useCallback(async () => {
     if (!selectedSong) return;
     try {
       const { data } = await axios.get<Song>(
-        `${import.meta.env.VITE_API_URL}/api/v1/song/:songid`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/song/:songid`
       );
       setSong(data);
     } catch (error) {
@@ -127,7 +129,7 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.get<{ songs: Song[]; album: Album }>(
-        `${import.meta.env.VITE_API_URL}/api/v1/album/${id}`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/album/${id}`
       );
 
       setAlbumData(data.album);
@@ -162,6 +164,8 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
         fetchAlbumsongs,
         albumData,
         albumSong,
+        fetchSongs,
+        fetchAlbums,
       }}
     >
       {children}

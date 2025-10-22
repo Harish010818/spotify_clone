@@ -6,11 +6,11 @@ import { SongProivder } from "./context/SongContext.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <UserProvider>
-    <SongProivder>
-      <App />
-    </SongProivder>
+      <SongProivder>
+        <App />
+      </SongProivder>
     </UserProvider>
-  </StrictMode>
+  // </StrictMode>
 );

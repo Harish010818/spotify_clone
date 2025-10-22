@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import React, {
   createContext,
   useContext,
@@ -8,7 +9,6 @@ import React, {
 } from "react";
 
 import toast, { Toaster } from "react-hot-toast";
-
 
 export interface User {
   _id: string;
@@ -34,8 +34,8 @@ interface UserContextType {
     password: string,
     navigate: (path: string) => void
   ) => Promise<void>;
-    addToPlaylist: (id: string) => void;
-    logoutUser: () => Promise<void>;
+  addToPlaylist: (id: string) => void;
+  logoutUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -58,18 +58,21 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   ) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
 
       toast.success(data.message);
       localStorage.setItem("token", data.token);
       setUser(data.user);
       setIsAuth(true);
       setBtnLoading(false);
-      navigate("/");
+      navigate("/login");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "An error occured");
       setBtnLoading(false);
@@ -83,13 +86,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   ) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/login`, {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
 
+          withCredentials: true,
+        }
+      );
+
+      console.log(data);
       toast.success(data.message);
-      localStorage.setItem("token", data.token);
       setUser(data.user);
       setIsAuth(true);
       setBtnLoading(false);
@@ -100,13 +113,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }
 
-  async function fetchUser() {
+  const fetchUser = async () => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/me`, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/me`,
+        {
+          withCredentials: true,
+        }
+      );
 
       setUser(data);
       setIsAuth(true);
@@ -115,20 +129,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       console.log(error);
       setLoading(false);
     }
-  }
+  };
 
   async function logoutUser() {
-    localStorage.clear();
-    setUser(null);
-    setIsAuth(false);
-
-    toast.success("User Logged Out");
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/logout`,
+        {
+          withCredentials: true,
+        }
+      );
+      setUser(null);
+      setIsAuth(false);
+      toast.success(data.message);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function addToPlaylist(id: string) {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/song/${id}`,
+        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/song/${id}`,
         {},
         {
           headers: {

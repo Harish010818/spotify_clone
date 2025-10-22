@@ -12,13 +12,11 @@ export const getAllAlbum = TryCatch(async (req, res) => {
     }
 
     if (albums) {
-        console.log("cache hit");
         return res.json(JSON.parse(albums));
     }
 
     else {
-        console.log("cache miss");
-        albums = await sql`SELECT * FROM album`;
+        albums = await sql`SELECT * FROM albums`;
 
         if (redisClient.isReady) {
             await redisClient.set("album", JSON.stringify(albums), {
@@ -26,7 +24,7 @@ export const getAllAlbum = TryCatch(async (req, res) => {
             })
         }
     }
-
+ 
     return res.json(albums);
 });
 
@@ -52,7 +50,7 @@ export const getAllSong = TryCatch(async (req, res) => {
             })
         }
     }
-
+    
     res.json(songs);
 });
 

@@ -1,9 +1,11 @@
 import express from "express";
-import { register, login, myProfile } from "./controller.js";
+import { register, login, myProfile, addToPlaylist, logout } from "./controller.js";
 import { isAuthenticated } from "./middleware.js";
 const userRouter = express.Router();
 userRouter.route("/register").post(register);
 userRouter.route("/login").post(login);
+userRouter.route("/logout").get(logout);
 userRouter.route("/me").get(isAuthenticated, myProfile);
+userRouter.post("/song/:id", isAuthenticated, addToPlaylist);
 export default userRouter;
 //# sourceMappingURL=userRoute.js.map

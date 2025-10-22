@@ -5,13 +5,26 @@ import Register from "./pages/Register";
 import { useUserData } from "./context/UserContext";
 import Loader from "./components/Loader";
 import Album from "./pages/Album";
+import PlayList from "./pages/Playlist";
+import Admin from "./pages/Admin";
 
 function App() {
   const { isAuth, loading } = useUserData();
+
+  if (loading) return <Loader />;
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/playlist",
+      element: isAuth ? <PlayList /> : <Login />
+    },
+    {
+      path: "/admin/dashboard",
+      element: isAuth ? <Admin /> : <Login />
     },
     {
       path: "/login",
@@ -28,13 +41,7 @@ function App() {
   ]);
 
   
-  return loading ? (
-    <Loader />
-  ) : (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

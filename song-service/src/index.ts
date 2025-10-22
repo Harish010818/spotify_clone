@@ -11,7 +11,7 @@ app.use(cors({origin : process.env.FRONTEND_URL, credentials : true}))
 
 const PORT = process.env.PORT || 6000;
 
-app.use("api/v1", songRoute);
+app.use("/api/v1/user", songRoute);
 
 app.listen(PORT, () => {
         console.log(`User service is running on port ${PORT}`);

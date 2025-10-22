@@ -44,3 +44,11 @@ body {
   @apply w-full bg-green-500 hover:bg-green-400 text-black font-semibold p-3 rounded-full cursor-pointer;
 }
 
+/* .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
+

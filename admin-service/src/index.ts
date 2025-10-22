@@ -45,7 +45,7 @@ const initDB = async () => {
 
 app.use("api/v1/admin",  adminRoutes);
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 
 initDB().then(() => {
     app.listen(PORT, () => {

@@ -9,14 +9,18 @@ interface AlbumCardProps {
 
 const AlbumCard: React.FC<AlbumCardProps> = ({ image, name, desc, id }) => {
   const navigate = useNavigate();
-  return (
+   return (
     <div
-      onClick={() => navigate("/album" + id)}
-      className="min-w-[180px] p-2 px-3 rounded cursor-pointer hove:bg[#ffffff26]"
+      onClick={() => navigate("/album/" + id)}
+      className="min-w-[180px] bg-[#181818] hover:bg-[#282828] transition-all duration-300 p-3 rounded-lg cursor-pointer"
     >
-      <img src={image} className="rounded w-[160px]" alt="" />
-      <p className="font-bold mt-2 mb-1">{name.slice(0, 12)}...</p>
-      <p className="text-slate-200 text-sm">{desc.slice(0, 18)}...</p>
+      <img
+        src={image}
+        alt={name}
+        className="rounded-lg w-[160px] h-[160px] object-cover mb-3 shadow-md"
+      />
+      <p className="font-bold text-[15px] truncate">{name}</p>
+      <p className="text-slate-400 text-sm truncate">{desc}</p>
     </div>
   );
 };

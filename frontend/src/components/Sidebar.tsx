@@ -1,61 +1,80 @@
 import { useNavigate } from "react-router-dom";
 import Playlistcard from "./Playlistcard";
 import { useUserData } from "../context/UserContext";
+import { FaSpotify } from "react-icons/fa6";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { user } = useUserData();
+
   return (
-    <div
-      className="w-[25%] h-full p-2 flex-col gap-2 text-white hidden 
-    lg:flex"
-    >
-      <div className="bg-[#121212] h-[15%] rounded flex flex-col justify-around">
+    <div className="hidden lg:flex flex-col w-[25%] h-full p-2 text-white bg-[#000000]">
+      {/* ===== Spotify Logo Section ===== */}
+      <div className="bg-[#121212] rounded-xl p-6 flex flex-col gap-4 items-start justify-center">
         <div
-          className="flex item-center gap-3 pl-8 cursor-pointer"
+          className="flex items-center gap-3 cursor-pointer w-full justify-center"
           onClick={() => navigate("/")}
         >
-          <img src="./home.png" alt="" className="w-6" />
-          <p className="font-bold">Home</p>
-        </div>
-        <div
-          className="flex item-center gap-3 pl-8 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          <img src="./search.png" alt="" className="w-6" />
-          <p className="font-bold">Search</p>
+          <FaSpotify size={40} className="text-[#1DB954]"/>
         </div>
       </div>
 
-      <div className="bg-[#121212]  h-[85%] rounded">
-        <div className="p-4 flex item-center justify-between">
-          <div>
-            <img src="/stack.png" className="w-8" alt="" />
-            <p className="font-semibold">Your Library</p>
-          </div>
+      {/* ===== Navigation Section ===== */}
+      <div className="bg-[#121212] rounded-xl mt-2 flex flex-col py-4 gap-1">
+        <div
+          className="flex items-center gap-4 px-6 py-2 cursor-pointer hover:text-[#1DB954] transition-all duration-300"
+          onClick={() => navigate("/")}
+        >
+          <img src="./home.png" alt="Home" className="w-6 opacity-80" />
+          <p className="font-semibold text-sm">Home</p>
+        </div>
 
+        <div
+          className="flex items-center gap-4 px-6 py-2 cursor-pointer hover:text-[#1DB954] transition-all duration-300"
+          onClick={() => navigate("/search")}
+        >
+          <img src="./search.png" alt="Search" className="w-6 opacity-80" />
+          <p className="font-semibold text-sm">Search</p>
+        </div>
+      </div>
+
+      {/* ===== Library Section ===== */}
+      <div className="bg-[#121212] rounded-xl mt-2 flex-1 flex flex-col overflow-y-auto hide-scrollbar">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#282828]">
           <div className="flex items-center gap-3">
-            <img src="./arrow.png" className="w-8" alt="" />
-            <img src="./plus.png" className="w-8" alt="" />
+            <img src="/stack.png" className="w-6 opacity-80" alt="Library" />
+            <p className="font-semibold text-sm">Your Library</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <img src="./plus.png" className="w-5 cursor-pointer hover:opacity-80" alt="Add" />
+            <img src="./arrow.png" className="w-5 cursor-pointer hover:opacity-80" alt="Arrow" />
           </div>
         </div>
 
-        <div onClick={() => navigate("/playlist")}>
+        <div className="px-3 py-2" onClick={() => navigate("/playlist")}>
           <Playlistcard />
         </div>
-        <div className="m-2 p-4 bg-[#121212] rounded font-semibold flex flex-col items-start gap-1 pl-4 mt-4">
-          <h1>Let's find some podcast to follow</h1>
-          <p className="font-light">We'll keep you update on new episoded</p>
-          <button className="px-4 py-1.5 bg-green-600 text-black text-[15px] rounded-full mt-4 cursor-pointer">
+
+        {/* ===== Podcast Section ===== */}
+        <div className="m-3 p-4 bg-gradient-to-b from-[#1f1f1f] to-[#121212] rounded-xl font-semibold flex flex-col items-start gap-1">
+          <h1 className="text-[15px] font-semibold">
+            Let’s find some podcasts to follow
+          </h1>
+          <p className="text-sm font-light text-gray-400">
+            We’ll keep you updated on new episodes.
+          </p>
+          <button className="px-4 py-1.5 bg-[#1DB954] hover:bg-[#1ed760] text-black text-[14px] font-semibold rounded-full mt-4 transition-all duration-300">
             Browse Podcasts
           </button>
         </div>
+
+        {/* ===== Admin Panel Button ===== */}
         {user && user.role === "admin" && (
           <button
             onClick={() => navigate("/admin/dashboard")}
-            className="px-4 py-1.5 bg-green-600 text-black text-[15px] rounded-full mt-4 cursor-pointer"
+            className="mx-4 my-4 px-4 py-2 bg-[#1DB954] hover:bg-[#1ed760] text-black text-[15px] font-semibold rounded-full cursor-pointer transition-all duration-200 shadow-lg hover:shadow-[#1db954]/40"
           >
-            Admin panel
+            Admin Panel
           </button>
         )}
       </div>

@@ -6,40 +6,52 @@ import Layout from "../Layout/Layout";
 
 const Home = () => {
   const { albums, songs, loading } = useSongData();
+  
   return (
-    <div>
+    <div className="text-white">
       {loading ? (
         <Loader />
       ) : (
         <Layout>
-          <div className="mb-4">
-            <h1 className="my-5 font-bold text-2xl">Featured Charts</h1>
-            <div className="flex overflow-auto">
-              {albums?.map((e, i) => (
-                <AlbumCard
-                  key={i}
-                  image={e.thumbnail}
-                  name={e.title}
-                  desc={e.description}
-                  id={e.id}
-                />
-              ))}
+          {/* ===== Featured Charts Section ===== */}
+          <section className="mb-10">
+            <h1 className="my-5 font-bold text-3xl tracking-tight">Featured Charts</h1>
+            <div className="flex overflow-x-auto gap-4 hide-scrollbar pb-2">
+              {albums && albums.length > 0 ? (
+                albums.map((e, i) => (
+                  <AlbumCard
+                    key={i}
+                    image={e.thumbnail}
+                    name={e.title}
+                    desc={e.description}
+                    id={e.id}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-400">No albums available</p>
+              )}
             </div>
-          </div>
-          <div className="mb-4">
-            <h1 className="my-5 font-bold text-2xl">Today's biggest hits</h1>
-            <div className="flex overflow-auto">
-              {songs?.map((e, i) => (
-                <SongCard
-                  key={i}
-                  image={e.thumbnail}
-                  name={e.title}
-                  desc={e.description}
-                  id={e.id}
-                />
-              ))}
+          </section>
+
+          {/* ===== Today's Hits Section ===== */}
+          <section>
+            <h1 className="my-5 font-bold text-3xl tracking-tight">Today’s Biggest Hits</h1>
+            <div className="flex overflow-x-auto gap-4 hide-scrollbar pb-2">
+              {songs && songs.length > 0 ? (
+                songs.map((e, i) => (
+                  <SongCard
+                    key={i}
+                    image={e.thumbnail}
+                    name={e.title}
+                    desc={e.description}
+                    id={e.id}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-400">No songs found</p>
+              )}
             </div>
-          </div>
+          </section>
         </Layout>
       )}
     </div>

@@ -28,9 +28,9 @@ app.use(cors({origin : process.env.FRONTEND_URL, credentials : true}))
 
 app.use("/api/v1/user", userRoute);
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     connectDB();
     console.log(`User service is running on port ${PORT}`);
 })
