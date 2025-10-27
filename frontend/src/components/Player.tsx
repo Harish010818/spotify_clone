@@ -39,11 +39,11 @@ const Player = () => {
     };
 
     audio.addEventListener("loadedmetadata", handleLoadedMetaData);
-    audio.addEventListener("timeupdate", handleLoadedMetaData);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
 
     return () => {
       audio.removeEventListener("loadedmetadata", handleLoadedMetaData);
-      audio.removeEventListener("timeupdate", handleLoadedMetaData);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, [song]);
 
@@ -125,16 +125,19 @@ const Player = () => {
 
           {/* Progress Bar */}
           <div className="flex items-center gap-3 w-full text-xs text-gray-400">
-            <span>{Math.floor(progress / 60)}:{(progress % 60).toString().padStart(2, "0")}</span>
+            {song.audio && (
+              <audio ref={audioRef} src={song.audio} autoPlay={isPlaying} />
+            )}
+            {/* <span>{Math.floor(progress / 60)}:{(progress % 60).toString().padStart(2, "0")}</span> */}
             <input
               type="range"
               min="0"
               max="100"
               value={(progress / duration) * 100 || 0}
               onChange={durationChange}
-              className="progress-bar w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-green-500"
+              className="progress-bar w-full h-1 bg-gray-600 rounded-lg cursor-pointer accent-green-500"
             />
-            <span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}</span>
+            {/* <span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}</span> */}
           </div>
         </div>
 
