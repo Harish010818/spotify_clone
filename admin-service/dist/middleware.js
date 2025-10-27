@@ -9,12 +9,12 @@ export const isAuthenticated = async (req, res, next) => {
             res.status(401).json({ message: "Authentication required" });
             return;
         }
-        const { data } = await axios.get(`${process.env.USER_SERVICE_URL}`, {
+        const { data } = await axios.get(`${process.env.USER_SERVICE_URL}/api/v1/user/me`, {
             headers: {
                 token
             }
         });
-        req.user = data;
+        req.user = data.user;
         next();
     }
     catch (err) {

@@ -5,6 +5,7 @@ import { sql } from "./config/db.js";
 import { redisClient } from "./utils/redisDB.js";
 // adding album 
 export const addAlbum = TryCatch(async (req, res) => {
+    console.log(req.user);
     if (req.user?.role !== "admin") {
         return res.status(401).json({ message: "Only admin can add albums" });
     }
@@ -83,12 +84,13 @@ export const addSong = TryCatch(async (req, res) => {
     });
     return;
 });
-// adding thumbnail to existing album
+// adding thumbnail to song
 export const addThumbnail = TryCatch(async (req, res) => {
     if (req.user?.role !== "admin") {
         return res.status(401).json({ message: "Only admin can add thumnails" });
     }
-    const song = await sql `SELECT * FROM albums WHERE id = ${req.params.id}`;
+    console.log(req.params.id);
+    const song = await sql `SELECT * FROM songs WHERE id = ${req.params.id}`;
     if (song.length === 0) {
         return res.status(404).json({
             message: "No song found with this id"
@@ -109,19 +111,21 @@ export const addThumbnail = TryCatch(async (req, res) => {
     const cloud = await cloudinary.v2.uploader.upload(fileBuffer.content, {
         folder: "spotify/thumbnails"
     });
+    console.log(cloud.secure_url);
     const result = await sql `
-                        UPDATE albums
+                        UPDATE songs
                         SET thumbnail = ${cloud.secure_url}
                         WHERE id = ${req.params.id}
                         RETURNING *  
                         `;
+    console.log(result);
     // cache
     if (redisClient.isReady) {
         await redisClient.del("songs");
     }
     res.status(200).json({
         message: "Thumbnail added successfully",
-        song: result[0]
+        Song: result[0]
     });
 });
 export const deleteAlbum = TryCatch(async (req, res) => {

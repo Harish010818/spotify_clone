@@ -27,7 +27,7 @@ const Album = () => {
   }, [params.id]);
   return (
     <div>
-      <Layout >
+      <Layout>
         {albumData && (
           <>
             {loading ? (

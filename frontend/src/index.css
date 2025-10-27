@@ -28,13 +28,18 @@ a:hover {
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  overflow: hidden; /* So that body doesn't scroll */
+  height: 100%;
   position: relative;
   min-width: 320px;
   min-height: 100vh;
   background: black;
+
+  /*  allow smooth scrolling but hide scrollbar visually */
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */;
 }
+
 
 .auth-input {
   @apply w-full p-3 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:border-gray-500;
@@ -44,11 +49,4 @@ body {
   @apply w-full bg-green-500 hover:bg-green-400 text-black font-semibold p-3 rounded-full cursor-pointer;
 }
 
-/* .hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
 

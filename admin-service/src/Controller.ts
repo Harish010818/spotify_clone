@@ -15,7 +15,8 @@ interface AuthRequest extends Request {
 
 // adding album 
 export const addAlbum = TryCatch(async (req: AuthRequest, res) => {
-
+    
+    console.log(req.user);
     if (req.user?.role !== "admin") {
         return res.status(401).json(
             { message: "Only admin can add albums" }
@@ -120,7 +121,7 @@ export const addSong = TryCatch(async (req: AuthRequest, res) => {
 })
 
 
-// adding thumbnail to existing album
+// adding thumbnail to song
 export const addThumbnail = TryCatch(async (req: AuthRequest, res) => {
     if (req.user?.role !== "admin") {
         return res.status(401).json(
@@ -128,7 +129,8 @@ export const addThumbnail = TryCatch(async (req: AuthRequest, res) => {
         )
     }
 
-    const song = await sql`SELECT * FROM albums WHERE id = ${req.params.id}`
+    console.log(req.params.id);
+    const song = await sql`SELECT * FROM songs WHERE id = ${req.params.id}`
 
     if (song.length === 0) {
         return res.status(404).json({
@@ -156,12 +158,15 @@ export const addThumbnail = TryCatch(async (req: AuthRequest, res) => {
         folder: "spotify/thumbnails"
     });
 
+    console.log(cloud.secure_url);
+
     const result = await sql`
-                        UPDATE albums
+                        UPDATE songs
                         SET thumbnail = ${cloud.secure_url}
                         WHERE id = ${req.params.id}
                         RETURNING *  
                         `
+    console.log(result);                    
     // cache
     if (redisClient.isReady) {
         await redisClient.del("songs")
@@ -169,7 +174,7 @@ export const addThumbnail = TryCatch(async (req: AuthRequest, res) => {
 
     res.status(200).json({
         message: "Thumbnail added successfully",
-        song: result[0]
+        Song: result[0]
     })
 
 })

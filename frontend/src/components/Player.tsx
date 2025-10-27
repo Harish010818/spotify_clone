@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useSongData } from "../context/SongContext";
-import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
-import { FaPause, FaPlay } from "react-icons/fa6";
+import { GrChapterPrevious, GrChapterNext } from "react-icons/gr";
+import { FaPlay, FaPause, FaHeart, FaDesktop } from "react-icons/fa";
+import { FiRepeat, FiMic, FiMaximize2 } from "react-icons/fi";
+import { MdQueueMusic } from "react-icons/md";
+import { BiShuffle } from "react-icons/bi";
+import { HiVolumeUp } from "react-icons/hi";
+import { PiSpeakerSimpleHighBold } from "react-icons/pi"; 
+
 
 const Player = () => {
   const {
@@ -68,62 +74,97 @@ const Player = () => {
     }
     setProgress(newTime);
   };
+   
+  useEffect(() => {
+    fetchSingleSong();
+  }, [selectedSong]);
 
+  console.log(song);  
   return (
-    <div>
-      {song && (
-        <div className="h-[10%] bg-black flex justify-between items-center text-white px-4">
-          <div className="lg:flex item-center gap-4">
-            <img src="" className="w-12" alt="" />
-            <div className="hidden md:block">
-              <p>{song.title}</p>
-              <p>{song.description?.slice(0, 30)}...</p>
-            </div>
-            <div className="flex flex-col items-center gap-1 m-auto">
-              {song.audio && (
-                <audio ref={audioRef} src={song.audio} autoPlay={isPlaying} />
-              )}
-              <div className="w-full flex items-center font-thin text-green-400">
-                <input
-                  type="range"
-                  min={"0"}
-                  max={"100"}
-                  className="progress-bar w-[120x] md:w-[300px]"
-                  value={(progress / duration) * 100 || 0}
-                  onChange={durationChange}
-                />
-              </div>
-              <div className="flex justify-center items-center gap-4">
-                <span className="cursor-pointer" onClick={prevSong}>
-                  <GrChapterPrevious />
-                </span>
-                <button
-                  className="bg-white text-black rounded-full p-2"
-                  onClick={handlePlayPause}
-                >
-                  {isPlaying ? <FaPause /> : <FaPlay />}
-                </button>
-                <span className="cursor-pointer" onClick={nextSong}>
-                  <GrChapterNext />  
-                </span>
-              </div>
-            </div>
+  <div>
+    {song && (
+      <div className="fixed bottom-0 left-0 right-0 h-[90px] bg-[#121212] text-white flex justify-between items-center px-4 border-t border-gray-800 shadow-lg">
+        
+        {/* Left Section - Song Info */}
+        <div className="flex items-center gap-4 w-[30%]">
+          <img
+              src={song.thumbnail ? song.thumbnail : "/download.jpeg"}
+              className="w-12"
+              alt=""
+            />
+          <div className="hidden md:block">
+            <p className="font-semibold text-sm">{song.title}</p>
+            <p className="text-xs text-gray-400">
+              {song.description?.slice(0, 35)}...
+            </p>
           </div>
-          <div className="flex items-center">
-              <input
-                 type="range"
-                 className="w-16 mid:w-12"
-                 min={"0"}
-                 max={"100"}
-                 step={"0.01"}
-                 value={volume*100}
-                 onChange={volumeChange}  
-              />      
-          </div> 
+          <div className="flex items-center gap-2 ml-3 text-gray-400">
+            <FaHeart className="cursor-pointer hover:text-green-500 transition" />
+            <PiSpeakerSimpleHighBold className="cursor-pointer hover:text-green-500 transition" />
+          </div>
         </div>
-      )}
-    </div>
-  );
+
+        {/* Middle Section - Player Controls */}
+        <div className="flex flex-col items-center justify-center w-[40%]">
+          <div className="flex items-center justify-center gap-6 text-xl mb-2">
+            <BiShuffle className="cursor-pointer hover:text-green-400 transition" />
+            <span className="cursor-pointer" onClick={prevSong}>
+              <GrChapterPrevious />
+            </span>
+            <button
+              className="bg-white text-black rounded-full p-3 hover:scale-105 transition"
+              onClick={handlePlayPause}
+            >
+              {isPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <span className="cursor-pointer" onClick={nextSong}>
+              <GrChapterNext />
+            </span>
+            <FiRepeat className="cursor-pointer hover:text-green-400 transition" />
+          </div>
+
+          {/* Progress Bar */}
+          <div className="flex items-center gap-3 w-full text-xs text-gray-400">
+            <span>{Math.floor(progress / 60)}:{(progress % 60).toString().padStart(2, "0")}</span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={(progress / duration) * 100 || 0}
+              onChange={durationChange}
+              className="progress-bar w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-green-500"
+            />
+            <span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}</span>
+          </div>
+        </div>
+
+        {/* Right Section - Volume & Extras */}
+        <div className="flex items-center gap-4 w-[25%] justify-end text-gray-400">
+          <FiMic className="cursor-pointer hover:text-green-500 transition" />
+          <MdQueueMusic className="cursor-pointer hover:text-green-500 transition" />
+          <FaDesktop className="cursor-pointer hover:text-green-500 transition" />
+          
+          {/* Volume Control */}
+          <div className="flex items-center gap-2">
+            <HiVolumeUp className="text-lg" />
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="0.01"
+              value={volume * 100}
+              onChange={volumeChange}
+              className="w-24 accent-green-500 cursor-pointer"
+            />
+          </div>
+
+          <FiMaximize2 className="cursor-pointer hover:text-green-500 transition" />
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default Player;

@@ -61,7 +61,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const { data } = await axios.post(
       `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/register`,
       { name, email, password },
-      { withCredentials: true } // 👈 important for cookies
+      { withCredentials: true } //👈 important for cookies
     );
 
     toast.success("Account created successfully!");
@@ -96,8 +96,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           withCredentials: true,
         }
       );
-
-      console.log(data);
+      
       toast.success(data.message);
       setUser(data.user);
       setIsAuth(true);
@@ -118,7 +117,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
       );
 
-      setUser(data);
+      setUser(data.user);
       setIsAuth(true);
       setLoading(false);
     } catch (error) {

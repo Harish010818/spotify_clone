@@ -58,16 +58,16 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
   const [selectedSong, setSelectedSong] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [albums, setAlbums] = useState<Album[]>([]);
-
+  
   const fetchSongs = useCallback(async () => {
     setLoading(true);
     try {
       const { data } = await axios.get<Song[]>(
         `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/song/all`
       );
-      console.log(data);
+
       setSongs(data);
-      if (data.length > 0) setSelectedSong(data[0].id.toString());
+      if (data.length > 0)setSelectedSong(data[0].id.toString());
       setIsPlaying(false);
     } catch (error) {
       console.log(error);
@@ -82,7 +82,7 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
       const { data } = await axios.get<Album[]>(
         `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/album/all`
       );
-      console.log(data);
+
       setAlbums(data);
     } catch (error) {
       console.log(error);
@@ -95,8 +95,9 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
     if (!selectedSong) return;
     try {
       const { data } = await axios.get<Song>(
-        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/song/:songid`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/song/${selectedSong}`
       );
+      console.log("data ye aara hai",  data);
       setSong(data);
     } catch (error) {
       console.error(error);
@@ -129,7 +130,7 @@ export const SongProivder: React.FC<SongProviderProps> = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.get<{ songs: Song[]; album: Album }>(
-        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/album/${id}`
+        `${import.meta.env.VITE_SONG_SERVICE_API_URL}/api/v1/user/album/${id}`
       );
 
       setAlbumData(data.album);

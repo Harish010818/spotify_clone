@@ -9,19 +9,19 @@ export const register = TryCatch(async (req, res) => {
             message: "All field are required"
         });
     }
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (user) {
         return res.status(400).json({
             message: "The user is already exist with this username"
         });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userData = await User.create({
+    user = await User.create({
         name,
         email,
         password: hashedPassword,
     });
-    const token = jwt.sign({ userId: userData._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
     return res.status(200)
         .cookie("token", token, {
         httpOnly: true,
@@ -31,7 +31,7 @@ export const register = TryCatch(async (req, res) => {
     }).json({
         success: true,
         message: "Account created successfully",
-        userData
+        user
     });
 });
 export const login = TryCatch(async (req, res) => {
@@ -59,7 +59,8 @@ export const login = TryCatch(async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000
     })
         .json({
-        message: "Login successfully"
+        message: "Login successfully",
+        user
     });
 });
 export const logout = TryCatch(async (_, res) => {
@@ -70,10 +71,10 @@ export const logout = TryCatch(async (_, res) => {
     });
 });
 export const myProfile = TryCatch(async (req, res) => {
-    const userData = req.user;
+    const user = req.user;
     return res.status(200).json({
         success: true,
-        userData
+        user
     });
 });
 export const addToPlaylist = TryCatch(async (req, res) => {

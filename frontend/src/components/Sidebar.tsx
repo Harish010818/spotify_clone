@@ -6,6 +6,7 @@ import { FaSpotify } from "react-icons/fa6";
 const Sidebar = () => {
   const navigate = useNavigate();
   const { user } = useUserData();
+  console.log(user);
 
   return (
     <div className="hidden lg:flex flex-col w-[25%] h-full p-2 text-white bg-[#000000]">
@@ -25,7 +26,7 @@ const Sidebar = () => {
           className="flex items-center gap-4 px-6 py-2 cursor-pointer hover:text-[#1DB954] transition-all duration-300"
           onClick={() => navigate("/")}
         >
-          <img src="./home.png" alt="Home" className="w-6 opacity-80" />
+          <img src="/home.png" alt="Home" className="w-6 opacity-80" />
           <p className="font-semibold text-sm">Home</p>
         </div>
 
@@ -33,7 +34,7 @@ const Sidebar = () => {
           className="flex items-center gap-4 px-6 py-2 cursor-pointer hover:text-[#1DB954] transition-all duration-300"
           onClick={() => navigate("/search")}
         >
-          <img src="./search.png" alt="Search" className="w-6 opacity-80" />
+          <img src="/search.png" alt="Search" className="w-6 opacity-80" />
           <p className="font-semibold text-sm">Search</p>
         </div>
       </div>
@@ -46,8 +47,8 @@ const Sidebar = () => {
             <p className="font-semibold text-sm">Your Library</p>
           </div>
           <div className="flex items-center gap-2">
-            <img src="./plus.png" className="w-5 cursor-pointer hover:opacity-80" alt="Add" />
-            <img src="./arrow.png" className="w-5 cursor-pointer hover:opacity-80" alt="Arrow" />
+            <img src="/plus.png" className="w-5 cursor-pointer hover:opacity-80" alt="Add" />
+            <img src="/arrow.png" className="w-5 cursor-pointer hover:opacity-80" alt="Arrow" />
           </div>
         </div>
 

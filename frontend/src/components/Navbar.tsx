@@ -16,16 +16,16 @@ const Navbar = () => {
         {/* === Arrows === */}
         <div className="flex items-center gap-2">
           <img
-            src="./left_arrow.png"
-            alt="Left Arrow"
+            src="/left_arrow.png"
+            alt=""
             className="w-8 bg-black p-2 rounded-full cursor-pointer  hover:shadow-lg hover:scale-100 
   transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] 
   hover:text-black  hover:bg-gray-600"
             onClick={() => navigate(-1)}
           />
           <img
-            src="./right_arrow.png"
-            alt="Right Arrow"
+            src="/right_arrow.png"
+            alt=""
             className="w-8 bg-black p-2 rounded-full cursor-pointer  hover:shadow-lg hover:scale-100 
   transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] 
   hover:text-black  hover:bg-gray-600"

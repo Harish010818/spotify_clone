@@ -10,7 +10,6 @@ import Admin from "./pages/Admin";
 
 function App() {
   const { isAuth, loading } = useUserData();
-  console.log(isAuth, loading);
   if (loading) return <Loader />;
 
   const router = createBrowserRouter([

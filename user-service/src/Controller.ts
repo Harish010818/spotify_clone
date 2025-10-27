@@ -13,7 +13,7 @@ export const register = TryCatch(async (req, res) => {
         })
     }
 
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (user) {
         return res.status(400).json({
             message: "The user is already exist with this username"
@@ -22,7 +22,7 @@ export const register = TryCatch(async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const userData = await User.create(
+    user = await User.create(
         {
             name,
             email,
@@ -32,7 +32,7 @@ export const register = TryCatch(async (req, res) => {
     )
 
 
-    const token = jwt.sign({ userId: userData._id }, process.env.SECRET_KEY as string, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY as string, { expiresIn: '1d' });
 
     return res.status(200)
         .cookie("token", token, {
@@ -43,7 +43,7 @@ export const register = TryCatch(async (req, res) => {
         }).json({
         success: true,
         message: "Account created successfully",
-        userData
+        user
     })
 })
 
@@ -77,7 +77,8 @@ export const login = TryCatch(async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
         .json({
-            message: "Login successfully"
+            message: "Login successfully",
+            user
         })
 })
 
@@ -92,10 +93,10 @@ export const logout = TryCatch( async(_: AuthRequest, res) => {
 
 
 export const myProfile = TryCatch( async(req: AuthRequest, res) => {
-    const userData = req.user;
-      return res.status(200).json({
+    const user = req.user;
+    return res.status(200).json({
              success : true,
-             userData
+             user
     })  
 })
 

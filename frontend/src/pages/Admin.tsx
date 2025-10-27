@@ -38,15 +38,15 @@ const Admin = () => {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/album/new`,
-        formData,
+        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/admin/album/new`,
+         formData,
         {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          // headers: { "Content-Type" : "multipart/form-data" },
+          withCredentials: true
         }
       );
 
+      console.log(data);
       toast.success(data.message);
       fetchAlbums();
       setBtnLoading(false);
@@ -74,12 +74,11 @@ const Admin = () => {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/song/new`,
+        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/admin/song/new`,
         formData,
         {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          // headers: { "Content-Type" : "multipart/form-data" },
+          withCredentials: true
         }
       );
 
@@ -97,6 +96,7 @@ const Admin = () => {
   };
 
   const addThumbnailHandler = async (id: string) => {
+    console.log("clicked");
     if (!file) return;
 
     const formData = new FormData();
@@ -106,15 +106,14 @@ const Admin = () => {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/song/${id}`,
+        `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/admin/song/${id}`,
         formData,
         {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
+          withCredentials: true
         }
       );
-
+      
+      console.log(data);
       toast.success(data.message);
       fetchSongs();
       setBtnLoading(false);
@@ -130,11 +129,9 @@ const Admin = () => {
       setBtnLoading(true);
       try {
         const { data } = await axios.delete(
-          `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/album/${id}`,
+          `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/admin/album/${id}`,
           {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
+           withCredentials: true
           }
         );
 
@@ -154,11 +151,9 @@ const Admin = () => {
       setBtnLoading(true);
       try {
         const { data } = await axios.delete(
-          `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/song/${id}`,
+          `${import.meta.env.VITE_ADMIN_SERVICE_API_URL}/api/v1/admin/song/${id}`,
           {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
+            withCredentials: true
           }
         );
 
@@ -178,31 +173,36 @@ const Admin = () => {
     }
   }, [user, navigate]);
   return (
-    <div className="min-h-screen bg-[#212121] text-white p-8">
-      <Link
-        to={"/"}
-        className="bg-green-500 text-white font-bold py-2 px-4 rounded-full"
-      >
-        Go to home page
-      </Link>
+  <main className="bg-gradient-to-b from-[#121212] to-[#000000] text-white p-6 sm:p-10 min-h-screen">
+    {/* Go Home Button */}
+    <Link
+      to={"/"}
+      className="inline-block bg-white hover:bg-gray-600 transition-all duration-300 text-white font-semibold py-2 px-5 rounded-full shadow-md mb-6"
+    >
+      ← Go to Home
+    </Link>
 
-      <h2 className="text-2xl font-bold mb-6 mt-6">Add Album</h2>
+    {/* ===== Add Album Section ===== */}
+    <section className="mb-12">
+      <h2 className="text-3xl font-bold mb-6 border-b border-[#2a2a2a] pb-2">
+        Add Album
+      </h2>
       <form
-        className="bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col items-center justify-center gap-4"
+        className="bg-[#181818] hover:bg-[#202020] transition-all duration-300 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center gap-5 w-full sm:w-[500px] mx-auto"
         onSubmit={addAlbumHandler}
       >
         <input
           type="text"
           placeholder="Title"
-          className="auth-input"
+          className="auth-input w-full bg-[#2a2a2a] rounded-md text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
         <input
           type="text"
-          placeholder="Descripiton"
-          className="auth-input"
+          placeholder="Description"
+          className="auth-input w-full bg-[#2a2a2a] rounded-md text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
@@ -211,136 +211,156 @@ const Admin = () => {
           type="file"
           placeholder="Choose Thumbnail"
           onChange={fileChangeHandler}
-          className="auth-input"
+          className="auth-input w-full text-gray-300"
           accept="image/*"
           required
         />
         <button
-          className="auth-btn"
-          style={{ width: "100px" }}
+          className="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-2 rounded-full transition-all duration-300"
           disabled={btnLoading}
         >
           {btnLoading ? "Please Wait..." : "Add"}
         </button>
       </form>
+    </section>
 
-      <h2 className="text-2xl font-bold mb-6 mt-6">Add AddSong</h2>
+    {/* ===== Add Song Section ===== */}
+    <section className="mb-12">
+      <h2 className="text-3xl font-bold mb-6 border-b border-[#2a2a2a] pb-2">
+        Add Song
+      </h2>
       <form
-        className="bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col items-center justify-center gap-4"
+        className="bg-[#181818] hover:bg-[#202020] transition-all duration-300 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center gap-5 w-full sm:w-[500px] mx-auto"
         onSubmit={addSongHandler}
       >
         <input
           type="text"
           placeholder="Title"
-          className="auth-input"
+          className="auth-input w-full bg-[#2a2a2a] rounded-md text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
         <input
           type="text"
-          placeholder="Descripiton"
-          className="auth-input"
+          placeholder="Description"
+          className="auth-input w-full bg-[#2a2a2a] rounded-md text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
         <select
-          className="auth-input"
+          className="auth-input w-full bg-[#2a2a2a] rounded-md text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           value={album}
           onChange={(e) => setAlbum(e.target.value)}
           required
         >
           <option value="">Choose Album</option>
-          {albums?.map((e: any, i: number) => {
-            return (
-              <option value={e.id} key={i}>
-                {e.title}
-              </option>
-            );
-          })}
+          {albums?.map((e, i) => (
+            <option value={e.id} key={i}>
+              {e.title}
+            </option>
+          ))}
         </select>
         <input
           type="file"
-          placeholder="Choose audio"
+          placeholder="Choose Audio"
           onChange={fileChangeHandler}
-          className="auth-input"
+          className="auth-input w-full text-gray-300"
           accept="audio/*"
           required
         />
         <button
-          className="auth-btn"
-          style={{ width: "100px" }}
+          className="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-2 rounded-full transition-all duration-300"
           disabled={btnLoading}
         >
           {btnLoading ? "Please Wait..." : "Add"}
         </button>
       </form>
+    </section>
 
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4">Added Albums</h3>
-        <div className="flex justify-center md:justify-start gap-2 items-center flex-wrap">
-          {albums?.map((e, i) => {
-            return (
-              <div className="bg-[#181818] p-4 rounded-lg shadow-md" key={i}>
-                <img src={e.thumbnail} className="mr-1 w-52 h-52" alt="" />
-                <h4 className="text-lg font-bold">{e.title.slice(0, 30)}</h4>
-                <h4 className="text-lg font-bold">
-                  {e.description.slice(0, 20)}..
-                </h4>
+    {/* ===== Added Albums ===== */}
+    <section className="mt-10">
+      <h3 className="text-2xl font-semibold mb-5">Added Albums</h3>
+      <div className="flex flex-wrap justify-center sm:justify-start gap-6">
+        {albums?.map((e, i) => (
+          <div
+            className="bg-[#181818] hover:bg-[#202020] transition-all duration-300 p-4 rounded-xl shadow-md w-[240px] flex flex-col items-center"
+            key={i}
+          >
+            <img
+              src={e.thumbnail}
+              className="rounded-md w-full h-[200px] object-cover mb-3"
+              alt={e.title}
+            />
+            <h4 className="text-lg font-bold truncate w-full text-center">
+              {e.title}
+            </h4>
+            <p className="text-gray-400 text-sm truncate w-full text-center">
+              {e.description}
+            </p>
+            <button
+              disabled={btnLoading}
+              className="mt-3 flex items-center gap-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all duration-300"
+              onClick={() => deleteAlbum(e.id)}
+            >
+              <MdDelete /> Delete
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ===== Add Thumbnail to Songs ===== */}
+    <section className="mt-14">
+      <h3 className="text-2xl font-semibold mb-5">Manage Song Thumbnails</h3>
+      <div className="flex flex-wrap justify-center sm:justify-start gap-6">
+        {songs?.map((e, i) => (
+          <div
+            className="bg-[#181818] hover:bg-[#202020] transition-all duration-300 p-4 rounded-xl shadow-md w-[240px] flex flex-col items-center"
+            key={i}
+          >
+            {e.thumbnail ? (
+              <img
+                src={e.thumbnail}
+                className="rounded-md w-full h-[200px] object-cover mb-3"
+                alt={e.title}
+              />
+            ) : (
+              <div className="flex flex-col justify-center items-center gap-2 mb-3">
+                <input
+                  type="file"
+                  onChange={fileChangeHandler}
+                  className="text-sm text-gray-300"
+                />
                 <button
+                  className="bg-green-500 hover:bg-green-600 text-black font-semibold px-4 py-1.5 rounded-full transition-all duration-300 cursor-pointer"
                   disabled={btnLoading}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
-                  onClick={() => deleteAlbum(e.id)}
+                  onClick={() => addThumbnailHandler(e.id)}
                 >
-                  <MdDelete />
+                  {btnLoading ? "Please Wait..." : "Add Thumbnail"}
                 </button>
               </div>
-            );
-          })}
-        </div>
+            )}
+            <h4 className="text-lg font-bold truncate w-full text-center">
+              {e.title}
+            </h4>
+            <p className="text-gray-400 text-sm truncate w-full text-center">
+              {e.description}
+            </p>
+            <button
+              disabled={btnLoading}
+              className="mt-3 flex items-center gap-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all duration-300"
+              onClick={() => deleteSong(e.id)}
+            >
+              <MdDelete /> Delete
+            </button>
+          </div>
+        ))}
       </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4">Add Thumbnail</h3>
-        <div className="flex justify-center md:justify-start gap-2 items-center flex-wrap">
-          {songs?.map((e, i) => {
-            return (
-              <div className="bg-[#181818] p-4 rounded-lg shadow-md" key={i}>
-                {e.thumbnail ? (
-                  <img src={e.thumbnail} className="mr-1 w-52 h-52" alt="" />
-                ) : (
-                  <div className="flex flex-col justify-center items-center gap-2 w-[250px]">
-                    <input type="file" onChange={fileChangeHandler} />
-                    <button
-                      className="auth-btn"
-                      style={{ width: "200px" }}
-                      disabled={btnLoading}
-                      onClick={() => addThumbnailHandler(e.id)}
-                    >
-                      {btnLoading ? "Please Wait..." : "Add Thumbnail"}
-                    </button>
-                  </div>
-                )}
-
-                <h4 className="text-lg font-bold">{e.title.slice(0, 30)}</h4>
-                <h4 className="text-lg font-bold">
-                  {e.description.slice(0, 20)}..
-                </h4>
-                <button
-                  disabled={btnLoading}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
-                  onClick={() => deleteSong(e.id)}
-                >
-                  <MdDelete />
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+    </section>
+  </main>
+);
 };
 
 export default Admin;
