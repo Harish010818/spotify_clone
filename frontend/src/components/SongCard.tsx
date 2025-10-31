@@ -33,15 +33,15 @@ const SongCard: React.FC<SongCardProps> = ({ image, name, desc, id }) => {
             setSelectedSong(id);
             setIsPlaying(true);
           }}
-          className="absolute bottom-3 right-12 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105"
+          className="absolute cursor-pointer bottom-3 right-14 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105"
         >
           <FaPlay />
         </button>
 
         {isAuth && (
           <button
-            onClick={() => saveToPlayListHandler}
-            className="absolute bottom-3 right-3 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105"
+            onClick={saveToPlayListHandler}
+            className="absolute cursor-pointer bottom-3 right-3 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105"
           >
             <FaBookBookmark />
           </button>

@@ -145,24 +145,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }
 
-  async function addToPlaylist(id: string) {
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/song/${id}`,
-        {},
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
+async function addToPlaylist(id: string) {
+  console.log(id);
+  try {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_USER_SERVICE_API_URL}/api/v1/user/song/${id}`,
+      {}, // 👈 body (empty because koi data send nahi ho raha)
+      {
+        withCredentials: true, // 👈 config (correct position)
+      }
+    );
 
-      toast.success(data.message);
-      fetchUser();
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "An Error Occured");
-    }
+    toast.success(data.message);
+    fetchUser();
+  } catch (error: any) {
+    toast.error(error.response?.data?.message || "An Error Occurred");
   }
+}
+
 
   useEffect(() => {
     fetchUser();

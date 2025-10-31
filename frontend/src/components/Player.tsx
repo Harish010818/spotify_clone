@@ -9,7 +9,7 @@ import { HiVolumeUp } from "react-icons/hi";
 import { PiSpeakerSimpleHighBold } from "react-icons/pi"; 
 
 
-const Player = () => {
+const Player =  () => {
   const {
     song,
     nextSong,
@@ -128,7 +128,7 @@ const Player = () => {
             {song.audio && (
               <audio ref={audioRef} src={song.audio} autoPlay={isPlaying} />
             )}
-            {/* <span>{Math.floor(progress / 60)}:{(progress % 60).toString().padStart(2, "0")}</span> */}
+            {/*<span>{Math.floor(progress / 100)}:{(progress % 100).toString().padStart(2, "0")}</span>*/}
             <input
               type="range"
               min="0"
@@ -137,10 +137,9 @@ const Player = () => {
               onChange={durationChange}
               className="progress-bar w-full h-1 bg-gray-600 rounded-lg cursor-pointer accent-green-500"
             />
-            {/* <span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}</span> */}
+            {/*<span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, "0")}</span>*/}
           </div>
         </div>
-
         {/* Right Section - Volume & Extras */}
         <div className="flex items-center gap-4 w-[25%] justify-end text-gray-400">
           <FiMic className="cursor-pointer hover:text-green-500 transition" />
