@@ -60,15 +60,15 @@ Before you begin, ensure you have installed the following:
 ### ⚙️ Installation  
 
 Build `spotify_clone` from the source and install dependencies.  
-
-1️⃣ Clone the repository:  
 ```bash
+1️⃣ Clone the repository:  
+
 git clone https://github.com/Harishh0881/spotify_clone
 
 2️⃣ Navigate to the project directory:
-```bash
+
 cd spotify_clone
 
 3️⃣ Install the dependencies:
-```bash
+
 npm install
